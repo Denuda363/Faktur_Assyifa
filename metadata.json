@@ -1,0 +1,6 @@
+{
+  "name": "FinTrac Pro",
+  "description": "Professional Invoice Management System with supplier tracking, smart due date alerts, and partial payment support.",
+  "requestFramePermissions": [],
+  "majorCapabilities": ["MAJOR_CAPABILITY_SERVER_SIDE_GEMINI_API"]
+}

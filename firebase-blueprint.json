@@ -1,0 +1,113 @@
+{
+  "entities": {
+    "Supplier": {
+      "title": "Supplier",
+      "description": "Business entities that provide goods or services.",
+      "type": "object",
+      "properties": {
+        "name": { "type": "string" },
+        "email": { "type": "string", "format": "email" },
+        "phone": { "type": "string" },
+        "address": { "type": "string" },
+        "createdAt": { "type": "string", "format": "date-time" }
+      },
+      "required": ["name"]
+    },
+    "Invoice": {
+      "title": "Invoice",
+      "description": "Invoice documents issued by suppliers.",
+      "type": "object",
+      "properties": {
+        "supplierId": { "type": "string" },
+        "supplierName": { "type": "string" },
+        "invoiceNumber": { "type": "string" },
+        "date": { "type": "string", "format": "date-time" },
+        "dueDate": { "type": "string", "format": "date-time" },
+        "totalAmount": { "type": "number" },
+        "paidAmount": { "type": "number" },
+        "status": { "type": "string", "enum": ["unpaid", "partial", "paid"] },
+        "remarks": { "type": "string" },
+        "createdAt": { "type": "string", "format": "date-time" },
+        "updatedAt": { "type": "string", "format": "date-time" }
+      },
+      "required": ["supplierId", "invoiceNumber", "date", "dueDate", "totalAmount"]
+    },
+    "Payment": {
+      "title": "Payment",
+      "description": "Payments made against an invoice.",
+      "type": "object",
+      "properties": {
+        "invoiceId": { "type": "string" },
+        "amount": { "type": "number" },
+        "date": { "type": "string", "format": "date-time" },
+        "method": { "type": "string" },
+        "remarks": { "type": "string" }
+      },
+      "required": ["invoiceId", "amount", "date"]
+    },
+    "AppSetting": {
+      "title": "AppSetting",
+      "description": "Global application and company settings.",
+      "type": "object",
+      "properties": {
+        "companyName": { "type": "string" },
+        "companyAddress": { "type": "string" },
+        "welcomeMessage": { "type": "string" },
+        "logoUrl": { "type": "string" }
+      }
+    },
+    "AppNotification": {
+      "title": "AppNotification",
+      "description": "System or transactional notifications.",
+      "type": "object",
+      "properties": {
+        "message": { "type": "string" },
+        "type": { "type": "string", "enum": ["invoice_added", "payment_added", "return_added", "overdue_alert", "generic"] },
+        "read": { "type": "boolean" },
+        "createdAt": { "type": "string", "format": "date-time" }
+      },
+      "required": ["message", "type", "createdAt", "read"]
+    },
+    "UserProfile": {
+      "title": "UserProfile",
+      "description": "Registered application user with their access control role.",
+      "type": "object",
+      "properties": {
+        "uid": { "type": "string" },
+        "name": { "type": "string" },
+        "email": { "type": "string", "format": "email" },
+        "role": { "type": "string", "enum": ["admin", "staff"] },
+        "password": { "type": "string" },
+        "status": { "type": "string", "enum": ["pending", "active"] },
+        "createdAt": { "type": "string", "format": "date-time" }
+      },
+      "required": ["name", "email", "role"]
+    }
+  },
+  "firestore": {
+    "/suppliers/{supplierId}": {
+      "schema": "Supplier",
+      "description": "Stores information about suppliers."
+    },
+    "/invoices/{invoiceId}": {
+      "schema": "Invoice",
+      "description": "Stores invoice details and payment status."
+    },
+    "/invoices/{invoiceId}/payments/{paymentId}": {
+      "schema": "Payment",
+      "description": "Stores payment history for each invoice."
+    },
+    "/settings/config": {
+      "schema": "AppSetting",
+      "description": "Stores global app configurations."
+    },
+    "/notifications/{notificationId}": {
+      "schema": "AppNotification",
+      "description": "Stores notifications for UI alerts."
+    },
+    "/users/{userId}": {
+      "schema": "UserProfile",
+      "description": "Stores user profiles with role permissions."
+    }
+  }
+}
